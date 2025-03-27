@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
 
-import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -29,9 +28,13 @@ public class HelloController {
             lblDistance.setText(rb.getString("distance"));
             lblFuel.setText(rb.getString("fuel"));
             btnCalculate.setText(rb.getString("calculate"));
+            NodeOrientation orientation;
 
-            boolean isRTL = locale.getLanguage().equals("fa");
-            NodeOrientation orientation = isRTL ? NodeOrientation.RIGHT_TO_LEFT : NodeOrientation.LEFT_TO_RIGHT;
+            if (locale.getLanguage().equals("fa")) {
+                orientation = NodeOrientation.RIGHT_TO_LEFT;
+            } else {
+                orientation = NodeOrientation.LEFT_TO_RIGHT;
+            }
 
             lblDistance.setNodeOrientation(orientation);
             lblFuel.setNodeOrientation(orientation);
@@ -41,6 +44,7 @@ public class HelloController {
             btnCalculate.setNodeOrientation(orientation);
             lblTime.setNodeOrientation(orientation);
 
+            onCalculateClick(null);
             showCurrentTime(locale);
         } catch (MissingResourceException e) {
             lblResult.setText("Resource bundle missing.");
@@ -58,10 +62,13 @@ public class HelloController {
         try {
             double distance = Double.parseDouble(tfDistance.getText());
             double fuel = Double.parseDouble(tfFuel.getText());
-            if (distance <= 0 || fuel <= 0) throw new NumberFormatException();
+
+            if (distance <= 0 || fuel <= 0) {
+                throw new NumberFormatException();
+            }
 
             double consumption = (fuel / distance) * 100;
-            String consumptionStr = new DecimalFormat("#0.00").format(consumption);
+            String consumptionStr = String.valueOf(consumption);
             String resultPattern = rb.getString("result");
             String formattedResult = resultPattern.replace("{0}", consumptionStr);
             lblResult.setText(formattedResult);
