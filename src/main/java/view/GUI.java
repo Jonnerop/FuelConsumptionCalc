@@ -10,7 +10,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../hello-view.fxml"));
         Scene scene = new Scene(loader.load());
-        primaryStage.setTitle("Fuel Consumption Calculator");
+        primaryStage.setTitle("Fuel Consumption Calculator, Jonne Roponen");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
